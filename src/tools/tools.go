@@ -5,6 +5,7 @@ import (
 	"time"
 	"tools/internal/guid"
 	"tools/internal/qr"
+	"tools/internal/file"
 )
 
 //NewUUID 生成一个UUID
@@ -20,6 +21,11 @@ func NewUUID() models.Result {
 //GenerateQRCodeFile 生成二维码文件
 func GenerateQRCodeFile(content string) models.File {
 	newFile := qr.GenerateQRCodeFile(content)
-	newFile.Date = time.Now().String()
+	//newFile.Date = time.Now().String()
 	return newFile
+}
+
+//保存文件到本地磁盘
+func SaveFileToDisk(fileName string, data []byte) (bool, error){
+	return file.SaveFile(fileName,data)
 }

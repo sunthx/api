@@ -17,6 +17,7 @@ func main() {
 
 	mux.Handle("/static/", http.StripPrefix("/static/", fileServer))
 	mux.HandleFunc("/guid/new", api.Guid)
+	mux.HandleFunc("/file/upload",api.UploadFile)
 
 	server := &http.Server{
 		Addr:    ":8090",
