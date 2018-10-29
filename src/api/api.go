@@ -8,6 +8,7 @@ import (
 	"time"
 	"io/ioutil"
 	"db"
+	"strings"
 	)
 
 func Guid(writer http.ResponseWriter, request *http.Request) {
@@ -75,4 +76,13 @@ func UploadFile(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type","application/json")
 	writer.Header().Set("Access-Control-Allow-Origin", "*")
 	writer.Write(value)
+}
+
+func DownloadFile(writer http.ResponseWriter,request *http.Request){
+	// request_url : /file/download/123  --> fileId : 123
+	reqestUrl := request.RequestURI
+	startIndex := strings.LastIndex(reqestUrl,"/")
+	totalLength := len([]rune(reqestUrl))
+	fileId := string([]rune(reqestUrl)[startIndex+1:totalLength-1])
+	writer.Write([]byte(fileId))
 }

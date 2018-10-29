@@ -12,12 +12,12 @@ func main() {
 	mux := http.NewServeMux()
 
 	//静态文件
-	fileServer := http.FileServer(http.Dir("./public/files/"))
-	http.StripPrefix("/static/", fileServer)
+	//fileServer := http.FileServer(http.Dir("./public/files/"))
+	//mux.Handle("/files/", http.StripPrefix("/files/", fileServer))
 
-	mux.Handle("/static/", http.StripPrefix("/static/", fileServer))
 	mux.HandleFunc("/guid/new", api.Guid)
 	mux.HandleFunc("/file/upload",api.UploadFile)
+	mux.HandleFunc("/file/download/",api.DownloadFile)
 
 	server := &http.Server{
 		Addr:    ":8090",
