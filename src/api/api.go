@@ -9,7 +9,8 @@ import (
 	"io/ioutil"
 	"db"
 	"strings"
-	)
+		"bytes"
+)
 
 func Guid(writer http.ResponseWriter, request *http.Request) {
 	newGUID := tools.NewUUID()
@@ -83,6 +84,21 @@ func DownloadFile(writer http.ResponseWriter,request *http.Request){
 	reqestUrl := request.RequestURI
 	startIndex := strings.LastIndex(reqestUrl,"/")
 	totalLength := len([]rune(reqestUrl))
-	fileId := string([]rune(reqestUrl)[startIndex+1:totalLength-1])
-	writer.Write([]byte(fileId))
+	fileId := string([]rune(reqestUrl)[startIndex+1:totalLength])
+
+	fileObject,err := db.GetFileObjectById(fileId)
+	if err != nil {
+		return
+	}
+
+	content,err := tools.GetFileContent(fileId)
+	if err != nil {
+		return
+	}
+
+	writer.Header().Set("Content-Disposition", "attachment; filename="+fileObject.FileName)
+	writer.Header().Set("Content-Type", request.Header.Get("Content-Type"))
+	writer.Header().Set("Content-Length", request.Header.Get("Content-Length"))
+
+	http.ServeContent(writer, request, fileObject.FileName, time.Now(), bytes.NewReader(content))
 }

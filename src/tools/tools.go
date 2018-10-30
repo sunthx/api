@@ -29,3 +29,8 @@ func GenerateQRCodeFile(content string) models.File {
 func SaveFileToDisk(fileName string, data []byte) (bool, error){
 	return file.SaveFile(fileName,data)
 }
+
+//GetFileContent 获取文件内容
+func GetFileContent(fileName string) ([]byte,error){
+	return file.GetFileContent(fileName)
+}

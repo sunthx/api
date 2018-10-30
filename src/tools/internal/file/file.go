@@ -39,3 +39,14 @@ func SaveFile(fileName string, data []byte) (bool, error) {
 	ioutil.WriteFile(fileStoragePath+"/"+fileName, data, os.ModePerm)
 	return true, nil
 }
+
+//GetFileContent 获取文件内容
+func GetFileContent(fileName string) ([]byte,error){
+	file,err :=os.Open(fileStoragePath + "/" + fileName)
+	if err != nil{
+		return nil,err
+	}
+
+	defer file.Close()
+	return ioutil.ReadAll(file)
+}
