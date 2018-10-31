@@ -8,7 +8,7 @@ import (
 	"tools/internal/guid"
 					)
 
-var fileStoragePath = "./public/files"
+var fileStoragePath = "/Users/pd/Desktop/TestData"
 
 //CreateEmptyFile 通过指定文件扩展名生成一个未使用的文件对象
 func CreateEmptyFile(ext string) models.File {
@@ -33,10 +33,17 @@ func SaveFile(fileName string, data []byte) (bool, error) {
 	}
 
 	filePath := fileStoragePath + "/" + fileName
-	newFile, _ := os.Create(filePath)
-	defer newFile.Close()
+	newFile, err := os.Create(filePath)
+	if err != nil {
+		return false,nil
+	}
 
-	ioutil.WriteFile(fileStoragePath+"/"+fileName, data, os.ModePerm)
+	defer newFile.Close()
+	err = ioutil.WriteFile(fileStoragePath+"/"+fileName, data, os.ModePerm)
+	if err != nil {
+		return false,nil
+	}
+
 	return true, nil
 }
 

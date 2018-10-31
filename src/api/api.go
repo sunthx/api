@@ -96,7 +96,7 @@ func DownloadFile(writer http.ResponseWriter,request *http.Request){
 		return
 	}
 
-	writer.Header().Set("Content-Disposition", "attachment; filename="+fileObject.FileName)
+	//writer.Header().Set("Content-Disposition", "attachment; filename="+fileObject.FileName)
 	writer.Header().Set("Content-Type", request.Header.Get("Content-Type"))
 	writer.Header().Set("Content-Length", request.Header.Get("Content-Length"))
 
